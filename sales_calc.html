@@ -1,0 +1,126 @@
+<!-- I dont think you'll need a header -->
+<!-- Define the Header 
+  <head>
+    <title>
+      How much should you price your work for?
+    </title>
+  </head> -->
+  
+  <!-- Define the Body -->
+  
+  <body>
+  
+    <!-- Introduction -->
+    <h1> Jennie and Davis's Ultimate Pricing Calculator</h1>
+    <p> Use this calculator to determine your final price! </p>
+    <br><br>
+  
+    <!-- Basic Options to use all the time -->
+    <h3> Enter Job Estimates </h3>
+    <p> To determine the final price you should charge for your job, fill out the fields below!
+      Most jobs will only require two pieces of information to make use of Jennie and Davis's Ultimate Pricing Formula.
+      <br>
+      Enter the cost of your building materials in dollars (i.e., 420.69), then enter the amount of time you estimate it will take to complete the project. For example, if a job will take 90 minutes to complete, enter "1.5" for one and a half hours.
+    </p>
+    <label for="mat_cost">Enter Material Cost (in $USD):</label>
+    <input type="number" min="0.00" step="0.01" value="0.00" id="mat_cost" />
+    <br>
+    <label for="amount_label">Enter Expected Amount of Labor (in Hours):</label>
+    <input type="number" min="0.0" step="0.5" value="0.0" id="labor_time" />
+    <br><br><br>
+  
+    <!-- Advanced Options -->
+    <h5> Optional: Advanced Pricing Formula </h5>
+    <p><small> Every once in a while, a job might need slightly more detail than the pricing formula above. If you find yourself in a situation that requires "batch" work, click on the advanced options below. If you change your mind, just click the button again to get back to the Ultimate Pricing formula. Make sure that your material cost reflects the total amount spent to make the entire batch.
+      </small></p>
+    <button type="button" class="collapsible">Advanced Options</button>
+    <div class="content">
+      <label for="hourly_rate">Your Hourly Rate (in $USD):</label>
+      <input type="number" min="0.00" step="0.01" value="30.00" id="hourly_rate" />
+      <br>
+      <label for="magic">Your "Magic Multiplier":</label>
+      <input type="number" min="0.00" step="0.1" value="1.5" id="magic" />
+      <br>
+      <label for="batch">Enter the number of items produced in each batch:</label>
+      <input type="number" min="0" step="0.1" value="1" id="batch" />
+    </div>
+    <br><br><br>
+  
+    <!-- Submit Button -->
+    <!--<h3> Compute Your Final Price </h3>
+    <p> Click the button below to compute your final sales price! </p> -->
+    <button onclick="computeSalesPrice()">Compute Sales Price</button>
+    <br><br><br>
+  
+    <!-- Print Results -->
+    <h3>
+      <span id="total_job_cost"></span>
+      <br>
+      <span id="cost_per_item"></span>
+      <br>
+      <span id="profit"></span>
+    </h3>
+    <h4> Focus on the money coming in, not the money coming out! </h4>
+  
+    <!-- Compute Sales Price -->
+    <script>
+      function computeSalesPrice() {
+        // Extract Form Data
+        var batch_material_cost = Number(document.getElementById("mat_cost").value);
+        var labor_time = Number(document.getElementById("labor_time").value);
+        var hourly_rate = Number(document.getElementById("hourly_rate").value);
+        var magic = Number(document.getElementById("magic").value)
+        var batch_number = Number(document.getElementById("batch").value)
+        
+        // Compute Sales Cost
+        var job_total = Number((batch_material_cost + (labor_time * hourly_rate)) * magic);
+        var cost_per_item = job_total / batch_number;
+        var labor_charge = Number((batch_material_cost + (labor_time * hourly_rate)));
+        var profit = job_total - labor_charge;
+        
+        // Build Strings to Output into HTML
+        var intro_string = "Your Final Pricing Results! \n";
+        var total_string = "You should be charging $" + job_total.toString(10) + " to complete this job!";
+        var per_item_string = "You should be charging $" + cost_per_item.toString(10) + " per item!";
+        var profit_string = "After you pay yourself $" + labor_charge.toString(10) + " for labor, your business should make a profit of $" + profit.toString(10) + "! \n"
+        
+        // Return Sales Cost
+        document.getElementById("total_job_cost").textContent = total_string;
+        if (batch_number != 1) {
+          document.getElementById("cost_per_item").textContent = per_item_string;
+        } else {
+          document.getElementById("cost_per_item").textContent = "";
+        }
+        document.getElementById("profit").textContent = profit_string;
+      }
+    </script>
+    
+    <!-- Code I stole to make the collapsable, do not touch! -->
+    <style>
+      .content {
+        padding: 0 18px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+    }
+    </style>
+  
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          }
+        });
+      }
+    </script>
+  
+  </body>
+  </html>
